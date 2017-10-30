@@ -1,10 +1,11 @@
 fileFormatVersion: 2
 guid: e0682376e198e254baa203ad9293f11b
-timeCreated: 1508711824
+timeCreated: 1509338085
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - liftCurve: {fileID: 11400000, guid: 9e2fe6f2ca443b947953438d4fea4947, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

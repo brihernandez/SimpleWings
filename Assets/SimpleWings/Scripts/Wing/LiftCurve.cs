@@ -4,4 +4,9 @@
 public class LiftCurve : ScriptableObject
 {
 	public AnimationCurve liftCurve;
+
+	public float GetCoefficientAtAoa(float angleOfAttack)
+	{
+		return liftCurve.Evaluate(angleOfAttack);
+	}
 }

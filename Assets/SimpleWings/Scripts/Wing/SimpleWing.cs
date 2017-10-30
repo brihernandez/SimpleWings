@@ -13,12 +13,10 @@ public class SimpleWing : MonoBehaviour
 	[Tooltip("When true, wing forces will be applied only at the center of mass.")]
 	public bool applyForceToOrigin = false;
 
-	[Tooltip("Angle of attack at which wing generates the most lift.")]
-	public float criticalAngleOfAttack = 18.0f;
+	[Tooltip("Lift coefficient curve.")]
+	public LiftCurve liftCurve;
 	[Tooltip("Force per m^2 the wing will provide when at the optimal angle of attack.")]
 	public float liftPerMeterSquared = 1.0f;
-	[Tooltip("Lift that comes \"for free\" at zero angle of attack. Zero is recommended for control surfaces such as rudders and elevators.")]
-	public float neutralLiftCoefficient = 0.6f;
 	[Tooltip("How much drag the wing puts out.")]
 	public float dragCoeff = 0.0f;
 
@@ -26,7 +24,7 @@ public class SimpleWing : MonoBehaviour
 	[SerializeField]
 	private float wingArea;
 
-	const float FORCE_MULT = 0.001f;
+	const float FORCE_MULT = 1.0f;
 
 	private Rigidbody rigid;
 
@@ -59,7 +57,12 @@ public class SimpleWing : MonoBehaviour
 	{
 		if (rigid == null)
 		{
-			Debug.LogWarning(name + ": SimpleWing has no rigidbody on self or parent!");
+			Debug.LogError(name + ": SimpleWing has no rigidbody on self or parent!");
+		}
+
+		if (liftCurve == null)
+		{
+			Debug.LogError(name + ": SimpleWing has no lift curve!");
 		}
 	}
 
@@ -84,23 +87,22 @@ public class SimpleWing : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (rigid != null)
+		if (rigid != null && liftCurve != null)
 		{
-			Vector3 forceApplyPos = (applyForceToOrigin) ? rigid.transform.position : transform.position;
+			Vector3 forceApplyPos = (applyForceToOrigin) ? rigid.transform.TransformPoint(rigid.centerOfMass) : transform.position;
 
 			Vector3 localVelocity = transform.InverseTransformDirection(rigid.velocity);
 			localVelocity.x = 0.0f;
 
 			// Wing generates most lift when it reaches the specified angle of attack.
 			angleOfAttack = Vector3.Angle(Vector3.forward, localVelocity);
+			float liftCoefficient = liftCurve.GetCoefficientAtAoa(angleOfAttack);
+
+			// Lift = speed^2 * lift coeffient * optimalLiftForce
+			liftForce = localVelocity.z * localVelocity.z * liftCoefficient * liftPerMeterSquared * WingArea * FORCE_MULT;
 
 			// Angle always returns a positive value, so add the sign back in.
-			float AoaComponent = Mathf.InverseLerp(0.0f, criticalAngleOfAttack, angleOfAttack);
-			AoaComponent *= (localVelocity.y > 0.0f) ? -1.0f : 1.0f;
-
-			// Lift comes from speed^2 * angle of attack * optimalLiftForce.
-			liftForce = localVelocity.z * localVelocity.z * AoaComponent * liftPerMeterSquared * WingArea * FORCE_MULT;
-			liftForce += neutralLiftCoefficient * liftPerMeterSquared;
+			liftForce *= -Mathf.Sign(localVelocity.y);
 
 			// Apply lift component.
 			rigid.AddForceAtPosition(transform.up * liftForce, forceApplyPos, ForceMode.Force);
