@@ -14,24 +14,31 @@ public class SimpleWing : MonoBehaviour
 	public bool applyForceToOrigin = false;
 
 	[Tooltip("Angle of attack at which wing generates the most lift.")]
-	public float criticalAngleOfAttack = 18.0f;
+	public float optimalAngleOfAttack = 18.0f;
 	[Tooltip("Force per m^2 the wing will provide when at the optimal angle of attack.")]
 	public float liftPerMeterSquared = 1.0f;
 	[Tooltip("Lift that comes \"for free\" at zero angle of attack. Zero is recommended for control surfaces such as rudders and elevators.")]
 	public float neutralLiftCoefficient = 0.6f;
+	[Tooltip("Any speeds higher than this speed (m/s) do not contribute to additional lift.")]
+	public float maxSpeedMS = 150.0f;
+
 	[Tooltip("How much drag the wing puts out.")]
 	public float dragCoeff = 0.0f;
 
 	[Header("Read Only")]
 	[SerializeField]
 	private float wingArea;
+	[SerializeField]
+	private float aoaComponent;
 
 	const float FORCE_MULT = 0.001f;
 
 	private Rigidbody rigid;
 
+	[SerializeField]
 	private float liftForce;
 	private float dragForce;
+	[SerializeField]
 	private float angleOfAttack;
 
 	public float AngleOfAttack
@@ -90,15 +97,20 @@ public class SimpleWing : MonoBehaviour
 
 			Vector3 localVelocity = transform.InverseTransformDirection(rigid.velocity);
 			localVelocity.x = 0.0f;
+			localVelocity.z = Mathf.Clamp(localVelocity.z, -maxSpeedMS, maxSpeedMS);
 
 			// Wing generates most lift when it reaches the specified angle of attack.
 			angleOfAttack = Vector3.Angle(Vector3.forward, localVelocity);
 
+			// Wing cannot generate more lift than at the critical angle of attack.
+			// This isn't particularly realistic but it is predictable and controllable.
+			angleOfAttack = Mathf.Min(angleOfAttack, optimalAngleOfAttack);
+
 			// Angle always returns a positive value, so add the sign back in.
-			float AoaComponent = Mathf.InverseLerp(0.0f, criticalAngleOfAttack, angleOfAttack);
+			float AoaComponent = Mathf.InverseLerp(0.0f, optimalAngleOfAttack, angleOfAttack);
 			AoaComponent *= (localVelocity.y > 0.0f) ? -1.0f : 1.0f;
 
-			// Lift comes from speed^2 * angle of attack * optimalLiftForce.
+			// Lift
 			liftForce = localVelocity.z * localVelocity.z * AoaComponent * liftPerMeterSquared * WingArea * FORCE_MULT;
 			liftForce += neutralLiftCoefficient * liftPerMeterSquared;
 
@@ -108,6 +120,9 @@ public class SimpleWing : MonoBehaviour
 			// Apply a drag proportional to the angle of attack and area of the control surface visible.
 			dragForce = rigid.velocity.sqrMagnitude * WingArea * angleOfAttack * Mathf.Sin(angleOfAttack * Mathf.Deg2Rad) * dragCoeff;
 			rigid.AddForceAtPosition(-rigid.velocity.normalized * dragForce, forceApplyPos, ForceMode.Force);
+
+			// DEBUG
+			aoaComponent = AoaComponent;
 		}
 	}
 
