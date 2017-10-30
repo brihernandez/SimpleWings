@@ -34,7 +34,7 @@ public class Airplane : MonoBehaviour
 
 		try
 		{
-			float temp = Input.GetAxis("Yaw");
+			Input.GetAxis("Yaw");
 			yawDefined = true;
 		}
 		catch (ArgumentException e)
