@@ -92,11 +92,12 @@ public class SimpleWing : MonoBehaviour
 			Vector3 localVelocity = transform.InverseTransformDirection(rigid.velocity);
 			localVelocity.x = 0.0f;
 
-			// Wing generates most lift when it reaches the specified angle of attack.
+			// Angle of attack is used as the look up for the lift and drag curves.
 			angleOfAttack = Vector3.Angle(Vector3.forward, localVelocity);
 			float liftCoefficient = wing.GetLiftAtAaoA(angleOfAttack);
 			float dragCoefficient = wing.GetDragAtAaoA(angleOfAttack);
 
+			// Calculate lift/drag.
 			liftForce = localVelocity.sqrMagnitude * liftCoefficient * WingArea * liftMultiplier;
 			dragForce = localVelocity.sqrMagnitude * dragCoefficient * WingArea * dragMultiplier;
 
