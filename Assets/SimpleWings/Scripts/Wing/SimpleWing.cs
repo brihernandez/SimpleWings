@@ -15,9 +15,9 @@ public class SimpleWing : MonoBehaviour
 
 	[Tooltip("Lift coefficient curve.")]
 	public WingCurves wing;
-	[Tooltip("Force per m^2 the wing will provide when at the optimal angle of attack.")]
-	public float liftPerMeterSquared = 0.5f;
-	[Tooltip("The higher the value, the more drag the wing incurs.")]
+	[Tooltip("The higher the value, the more lift the wing applie at a given angle of attack.")]
+	public float liftMultiplier = 0.8f;
+	[Tooltip("The higher the value, the more drag the wing incurs at a given angle of attack.")]
 	public float dragMultiplier = 0.8f;
 
 	[Header("Read Only")]
@@ -97,17 +97,14 @@ public class SimpleWing : MonoBehaviour
 			float liftCoefficient = wing.GetLiftAtAaoA(angleOfAttack);
 			float dragCoefficient = wing.GetDragAtAaoA(angleOfAttack);
 
-			// Lift = speed^2 * lift coeffient * optimalLiftForce
-			liftForce = localVelocity.sqrMagnitude * liftCoefficient * liftPerMeterSquared * WingArea;
+			liftForce = localVelocity.sqrMagnitude * liftCoefficient * WingArea * liftMultiplier;
+			dragForce = localVelocity.sqrMagnitude * dragCoefficient * WingArea * dragMultiplier;
 
 			// Vector3.Angle always returns a positive value, so add the sign back in.
 			liftForce *= -Mathf.Sign(localVelocity.y);
 
-			// Apply lift component.
+			// Lift is always normal to the surface. Drag is always opposite of the velocity.
 			rigid.AddForceAtPosition(transform.up * liftForce, forceApplyPos, ForceMode.Force);
-
-			// Apply a drag proportional to the angle of attack and area of the control surface visible.
-			dragForce = localVelocity.sqrMagnitude * WingArea * dragCoefficient * dragMultiplier;
 			rigid.AddForceAtPosition(-rigid.velocity.normalized * dragForce, forceApplyPos, ForceMode.Force);
 		}
 	}
