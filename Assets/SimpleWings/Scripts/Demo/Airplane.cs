@@ -76,10 +76,37 @@ public class Airplane : MonoBehaviour
 		}
 	}
 
+	private float CalculatePitchG()
+	{
+		// Angular velocity is in radians per second.
+		Vector3 localVelocity = transform.InverseTransformDirection(Rigidbody.velocity);
+		Vector3 localAngularVel = transform.InverseTransformDirection(Rigidbody.angularVelocity);
+
+		// Local pitch velocity (X) is positive when pitching down.
+
+		// Radius of turn = velocity / angular velocity        
+		float radius = localVelocity.z / localAngularVel.x;
+
+		// The radius of the turn will be negative when in a pitching down turn.
+
+		// Force is mass * radius * angular velocity^2
+		float verticalForce = (localVelocity.z * localVelocity.z) / radius;
+
+		// Express in G
+		float verticalG = verticalForce / Physics.gravity.y;
+
+		// Add the planet's gravity in. When the up is facing directly up, then the full
+		// force of gravity will be felt in the vertical.
+		verticalG += transform.up.y;
+
+		return verticalG;
+	}
+
 	private void OnGUI()
 	{
 		const float msToKnots = 1.94384f;
 		GUI.Label(new Rect(10, 40, 300, 20), string.Format("Speed: {0:0.0} knots", Rigidbody.velocity.magnitude * msToKnots));
 		GUI.Label(new Rect(10, 60, 300, 20), string.Format("Throttle: {0:0.0}%", throttle * 100.0f));
+		GUI.Label(new Rect(10, 80, 300, 20), string.Format("G Load: {0:0.0} G", CalculatePitchG()));
 	}
 }

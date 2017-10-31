@@ -7,24 +7,22 @@
 public class SimpleWing : MonoBehaviour
 {
 	[Tooltip("Size of the wing. The bigger the wing, the more lift it provides.")]
-	public Vector2 dimensions = Vector2.one;
+	public Vector2 dimensions = new Vector2(5.0f, 2.0f);
 	public float WingArea { get { return dimensions.x * dimensions.y; } }
 
 	[Tooltip("When true, wing forces will be applied only at the center of mass.")]
 	public bool applyForceToOrigin = false;
 
 	[Tooltip("Lift coefficient curve.")]
-	public LiftCurve liftCurve;
+	public WingCurves wing;
 	[Tooltip("Force per m^2 the wing will provide when at the optimal angle of attack.")]
-	public float liftPerMeterSquared = 1.0f;
-	[Tooltip("How much drag the wing puts out.")]
-	public float dragCoeff = 0.0f;
+	public float liftPerMeterSquared = 0.5f;
+	[Tooltip("The higher the value, the more drag the wing incurs.")]
+	public float dragMultiplier = 0.8f;
 
 	[Header("Read Only")]
 	[SerializeField]
 	private float wingArea;
-
-	const float FORCE_MULT = 1.0f;
 
 	private Rigidbody rigid;
 
@@ -60,9 +58,9 @@ public class SimpleWing : MonoBehaviour
 			Debug.LogError(name + ": SimpleWing has no rigidbody on self or parent!");
 		}
 
-		if (liftCurve == null)
+		if (wing == null)
 		{
-			Debug.LogError(name + ": SimpleWing has no lift curve!");
+			Debug.LogError(name + ": SimpleWing has no defined wing curves!");
 		}
 	}
 
@@ -87,7 +85,7 @@ public class SimpleWing : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (rigid != null && liftCurve != null)
+		if (rigid != null && wing != null)
 		{
 			Vector3 forceApplyPos = (applyForceToOrigin) ? rigid.transform.TransformPoint(rigid.centerOfMass) : transform.position;
 
@@ -96,19 +94,20 @@ public class SimpleWing : MonoBehaviour
 
 			// Wing generates most lift when it reaches the specified angle of attack.
 			angleOfAttack = Vector3.Angle(Vector3.forward, localVelocity);
-			float liftCoefficient = liftCurve.GetCoefficientAtAoa(angleOfAttack);
+			float liftCoefficient = wing.GetLiftAtAaoA(angleOfAttack);
+			float dragCoefficient = wing.GetDragAtAaoA(angleOfAttack);
 
 			// Lift = speed^2 * lift coeffient * optimalLiftForce
-			liftForce = localVelocity.z * localVelocity.z * liftCoefficient * liftPerMeterSquared * WingArea * FORCE_MULT;
+			liftForce = localVelocity.sqrMagnitude * liftCoefficient * liftPerMeterSquared * WingArea;
 
-			// Angle always returns a positive value, so add the sign back in.
+			// Vector3.Angle always returns a positive value, so add the sign back in.
 			liftForce *= -Mathf.Sign(localVelocity.y);
 
 			// Apply lift component.
 			rigid.AddForceAtPosition(transform.up * liftForce, forceApplyPos, ForceMode.Force);
 
 			// Apply a drag proportional to the angle of attack and area of the control surface visible.
-			dragForce = rigid.velocity.sqrMagnitude * WingArea * angleOfAttack * Mathf.Sin(angleOfAttack * Mathf.Deg2Rad) * dragCoeff;
+			dragForce = localVelocity.sqrMagnitude * WingArea * dragCoefficient * dragMultiplier;
 			rigid.AddForceAtPosition(-rigid.velocity.normalized * dragForce, forceApplyPos, ForceMode.Force);
 		}
 	}
