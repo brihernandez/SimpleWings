@@ -11,7 +11,7 @@ public class SimpleWing : MonoBehaviour
 	public float WingArea { get { return dimensions.x * dimensions.y; } }
 
 	[Tooltip("When true, wing forces will be applied only at the center of mass.")]
-	public bool applyForceToOrigin = false;
+	public bool applyForcesToCenter = false;
 
 	[Tooltip("Lift coefficient curve.")]
 	public WingCurves wing;
@@ -87,9 +87,9 @@ public class SimpleWing : MonoBehaviour
 	{
 		if (rigid != null && wing != null)
 		{
-			Vector3 forceApplyPos = (applyForceToOrigin) ? rigid.transform.TransformPoint(rigid.centerOfMass) : transform.position;
+			Vector3 forceApplyPos = (applyForcesToCenter) ? rigid.transform.TransformPoint(rigid.centerOfMass) : transform.position;
 
-			Vector3 localVelocity = transform.InverseTransformDirection(rigid.velocity);
+			Vector3 localVelocity = transform.InverseTransformDirection(rigid.GetPointVelocity(transform.position));
 			localVelocity.x = 0.0f;
 
 			// Angle of attack is used as the look up for the lift and drag curves.

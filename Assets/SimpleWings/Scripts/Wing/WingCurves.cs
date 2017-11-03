@@ -3,7 +3,7 @@
 /// <summary>
 /// A pair of curves for lift and drag that define a wing's behavior over an angle of attack.
 /// </summary>
-[CreateAssetMenu(fileName = "New Wing Curves", menuName = "Wings/Wing Curves", order = 99)]
+[CreateAssetMenu(fileName = "New Wing Curves", menuName = "Wing Curve", order = 99)]
 public class WingCurves : ScriptableObject
 {
 	[TextArea]
