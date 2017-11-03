@@ -1,14 +1,9 @@
 ﻿using UnityEngine;
 
-// TODO:
-// Executes in edit mode so that you cannot enter a wing X/Y of zero. The proper way
-// to do this would be with a custom inspector but those things are a huge hassle.
-[ExecuteInEditMode]
 public class SimpleWing : MonoBehaviour
 {
 	[Tooltip("Size of the wing. The bigger the wing, the more lift it provides.")]
 	public Vector2 dimensions = new Vector2(5.0f, 2.0f);
-	public float WingArea { get { return dimensions.x * dimensions.y; } }
 
 	[Tooltip("When true, wing forces will be applied only at the center of mass.")]
 	public bool applyForcesToCenter = false;
@@ -20,24 +15,39 @@ public class SimpleWing : MonoBehaviour
 	[Tooltip("The higher the value, the more drag the wing incurs at a given angle of attack.")]
 	public float dragMultiplier = 0.8f;
 
-	[Header("Read Only")]
-	[SerializeField]
-	private float wingArea;
-
 	private Rigidbody rigid;
 
-	private float liftForce;
-	private float dragForce;
-	private float angleOfAttack;
+	private float liftCoefficient = 0.0f;
+	private float dragCoefficient = 0.0f;
+	private float liftForce = 0.0f;
+	private float dragForce = 0.0f;
+	private float angleOfAttack = 0.0f;
 
 	public float AngleOfAttack
 	{
 		get
 		{
-			Vector3 localVelocity = transform.InverseTransformDirection(rigid.velocity);
-			return angleOfAttack * ((localVelocity.y > 0.0f) ? -1.0f : 1.0f);
+			if (rigid != null)
+			{
+				Vector3 localVelocity = transform.InverseTransformDirection(rigid.velocity);
+				return angleOfAttack * -Mathf.Sign(localVelocity.y);
+			}
+			else
+			{
+				return 0.0f;
+			}
 		}
 	}
+
+	public float WingArea
+	{
+		get { return dimensions.x * dimensions.y; }
+	}
+
+	public float LiftCoefficient { get { return liftCoefficient; } }
+	public float LiftForce { get { return liftForce; } }
+	public float DragCoefficient { get { return dragCoefficient; } }
+	public float DragForce { get { return dragForce; } }
 
 	public Rigidbody Rigidbody
 	{
@@ -72,9 +82,6 @@ public class SimpleWing : MonoBehaviour
 		if (dimensions.y <= 0.0f)
 			dimensions.y = 0.01f;
 
-		// TODO: Assigned only for the debug stuff. A custom inspector should be used for this.
-		wingArea = WingArea;
-
 		// DEBUG
 		if (rigid != null)
 		{
@@ -94,8 +101,8 @@ public class SimpleWing : MonoBehaviour
 
 			// Angle of attack is used as the look up for the lift and drag curves.
 			angleOfAttack = Vector3.Angle(Vector3.forward, localVelocity);
-			float liftCoefficient = wing.GetLiftAtAaoA(angleOfAttack);
-			float dragCoefficient = wing.GetDragAtAaoA(angleOfAttack);
+			liftCoefficient = wing.GetLiftAtAaoA(angleOfAttack);
+			dragCoefficient = wing.GetDragAtAaoA(angleOfAttack);
 
 			// Calculate lift/drag.
 			liftForce = localVelocity.sqrMagnitude * liftCoefficient * WingArea * liftMultiplier;
