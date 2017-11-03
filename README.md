@@ -53,7 +53,7 @@ Wing Curves can be created by right clicking in the Project window and selecting
 
 The Standard Wing is based on [experimental data on the NACA 0015 airfoil](http://www.aerospaceweb.org/question/airfoils/q0150b.shtml). It's a symmetrical wing, so it doesn't generate lift at zero angle of attack. However, because it's still a wing, it is very responsive to angle of attack and creates lift easily with minimal angles of attack. It will however stall at around 16 degrees and lift will drop dramatically. This wing is designed to be used by the main wing(s) on a plane.
 
-![screenshot](Screenshots/lift.png)
+![screenshot](Screenshots/lift.jpg)
 
 The flat plate wing is what it sounds like and is a good approximation for control surfaces or things that aren't necessarily lift producing wings like the fins on a missile. They produce lift, but that's only because they have an angle of attack and the wind beneath it is pushing it upwards. These don't really stall, but they don't really produce much lift unless they're deflecting pretty hard.
 
