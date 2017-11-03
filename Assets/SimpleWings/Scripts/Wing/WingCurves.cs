@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// A pair of curves for lift and drag that define a wing's behavior over an angle of attack.
+/// </summary>
 [CreateAssetMenu(fileName = "New Wing Curves", menuName = "Wings/Wing Curves", order = 99)]
 public class WingCurves : ScriptableObject
 {
@@ -7,10 +10,17 @@ public class WingCurves : ScriptableObject
 	public string description;
 
 	[SerializeField]
-	private AnimationCurve lift = new AnimationCurve();
+	[Tooltip("Lift curve by angle of attack. X axis should be from 0 to 180, with the Y axis being lift coeffient.")]
+	private AnimationCurve lift = new AnimationCurve(new Keyframe(0.0f, 0.0f), 
+		new Keyframe(45.0f, 1.0f),
+		new Keyframe(135.0f, -1.0f),
+		new Keyframe(180.0f, 0.0f));
 
 	[SerializeField]
-	private AnimationCurve drag = new AnimationCurve();
+	[Tooltip("Drag curve by angle of attack. X axis should be from 0 to 180, with the Y axis being drag coeffient.")]
+	private AnimationCurve drag = new AnimationCurve(new Keyframe(0.0f, 0.0f),
+		new Keyframe(90.0f, 1.0f),
+		new Keyframe(180.0f, 0.0f));
 
 	/// <summary>
 	/// Returns the lift coefficient at a given angle of attack.

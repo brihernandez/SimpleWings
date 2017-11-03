@@ -9,6 +9,8 @@ public class Airplane : MonoBehaviour
 	public ControlSurface rudder;
 	public Engine engine;
 
+	public WeaponDropper[] weapons;
+
 	public Rigidbody Rigidbody { get; internal set; }
 
 	private float throttle = 1.0f;
@@ -73,6 +75,17 @@ public class Airplane : MonoBehaviour
 			throttle = Mathf.Clamp01(throttle);
 
 			engine.throttle = throttle;
+		}
+
+		if (weapons.Length > 0)
+		{
+			if (Input.GetButtonDown("Fire3"))
+			{
+				foreach (WeaponDropper dropper in weapons)
+				{
+					dropper.Fire(Rigidbody.GetPointVelocity(dropper.transform.position));
+				}
+			}
 		}
 	}
 
