@@ -41,6 +41,8 @@ public class Weapon : MonoBehaviour
 		if (Rigidbody != null)
 		{
 			Rigidbody.velocity = velocity;
+			Random.InitState(GetInstanceID());
+			Rigidbody.angularVelocity = Random.insideUnitSphere * 15.0f * Mathf.Deg2Rad;
 			Rigidbody.isKinematic = false;
 		}
 		if (trail != null)
