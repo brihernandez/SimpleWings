@@ -8,6 +8,8 @@ A simple, configurable aerodynamic wing that applies lift and drag forces based 
 
 You can either clone the repository, or [download either the demo or asset package from the releases page](https://github.com/brihernandez/SimpleWings/releases).
 
+*When importing the demo content from the package, a "Yaw" axis will need to be set up in the Input Manager in order to get the rudder to work on the sample plane. This is because asset packages cannot modify the Input Manager, and the plane requires a third axis not available on the default setup.*
+
 ## Demo Controls
 
 The demo plane is best flown with an Xbox One controller. Keyboard controls will work, but because of the on/off input that comes from keys, it's not the best experience.
@@ -63,7 +65,7 @@ The Lifting wing is a high lift wing that generates lift even at 0 degrees angle
 
 ![screenshot](Screenshots/wingcurve.png)
 
-When creating wings, the most important points are the first and last 3. These are the ones that most often are directly available in any kind of lift coefficient vs alpha graph, and the ones will most often be adjusting. Most of CL graphs will stop a little after the stalling point, at which point air flow becomes unpredictable, but eventually starts following the pattern of a generic flat plate. This is represented by the middle 3 points in the default graph and for the most part will not need to be adjusted.
+When creating wings, the most important points are the first and last three. These are the ones that most often are directly available in any kind of lift coefficient vs alpha graph, and the ones that you will most often be adjusting. Most CL graphs will stop a little after the stalling point, at which point air flow becomes unpredictable. Eventually, most wings start to following the lift curves of a generic flat plate. This is represented by the middle three points in the default graph and does not usually need to be adjusted.
 
 ![screenshot](Screenshots/curvegenerator.png)
 
