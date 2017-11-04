@@ -61,7 +61,7 @@ The flat plate wing is what it sounds like and is a good approximation for contr
 
 The Lifting wing is a high lift wing that generates lift even at 0 degrees angle of attack, but stalls easily. It's based loosely on the [NACA 2408 wing](http://airfoiltools.com/airfoil/details?airfoil=naca2408-il#polars).
 
-# Creating Wing Curves
+### Creating Wing Curves
 
 ![screenshot](Screenshots/wingcurve.png)
 
