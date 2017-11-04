@@ -6,6 +6,10 @@ Built in **Unity 5.6.4.**
 
 ![screenshot](Screenshots/wings.png)
 
+![screenshot](Screenshots/landing.gif)
+
+![screenshot](Screenshots/createwing.gif)
+
 ## Download
 
 You can either clone the repository or [download the asset package](./SimpleWings.unitypackage) located in the root.
