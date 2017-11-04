@@ -61,7 +61,7 @@ The Lifting wing is a high lift wing that generates lift even at 0 degrees angle
 
 # Creating Wings
 
-[screenshot](Screenshots/wingcurve.png)
+![screenshot](Screenshots/wingcurve.png)
 
 When creating wings, the most important points are the first and last 3. These are the ones that most often are directly available in any kind of lift coefficient vs alpha graph, and the ones will most often be adjusting. Most of CL graphs will stop a little after the stalling point, at which point air flow becomes unpredictable, but eventually starts following the pattern of a generic flat plate. This is represented by the middle 3 points in the default graph and for the most part will not need to be adjusted.
 
