@@ -80,3 +80,9 @@ To actually fly the plane, you'll need to deflect your wings. The ControlSurface
 It's very simple to operate. All you need to do is set a normalized deflection (-1 to 1) through script using the Deflection property. From there, the control surface will move to the specified deflection at their given speed. Control surfaces only deflect in the "pitch" axis, so make sure you orient these as needed.
 
 For certain control surfaces you can put the wings on the same game object, but often times you want the axis of rotation to be different from where the wing is physically located. In those cases, the wing is best on a child game object. See the Airplane prefab for examples on how to set these up with wings.
+
+# Changelog
+
+### 1.0 (Initial release)
+
+- Released
