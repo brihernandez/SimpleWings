@@ -2,6 +2,7 @@
 using UnityEditor;
 
 [CustomEditor(typeof(SimpleWing))]
+[CanEditMultipleObjects]
 public class SimpleWingEditor : Editor
 {
 	private bool showDebug = false;

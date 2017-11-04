@@ -11,9 +11,9 @@ public class SimpleWing : MonoBehaviour
 	[Tooltip("Lift coefficient curve.")]
 	public WingCurves wing;
 	[Tooltip("The higher the value, the more lift the wing applie at a given angle of attack.")]
-	public float liftMultiplier = 0.8f;
+	public float liftMultiplier = 1.0f;
 	[Tooltip("The higher the value, the more drag the wing incurs at a given angle of attack.")]
-	public float dragMultiplier = 0.8f;
+	public float dragMultiplier = 1.0f;
 
 	private Rigidbody rigid;
 
@@ -111,13 +111,16 @@ public class SimpleWing : MonoBehaviour
 			// Vector3.Angle always returns a positive value, so add the sign back in.
 			liftForce *= -Mathf.Sign(localVelocity.y);
 
-			// Lift is always normal to the surface. Drag is always opposite of the velocity.
-			rigid.AddForceAtPosition(transform.up * liftForce, forceApplyPos, ForceMode.Force);
+			// Lift is always perpendicular to air flow.
+			Vector3 liftDirection = Vector3.Cross(rigid.velocity, transform.right).normalized;
+			rigid.AddForceAtPosition(liftDirection * liftForce, forceApplyPos, ForceMode.Force);
+
+			// Drag is always opposite of the velocity.
 			rigid.AddForceAtPosition(-rigid.velocity.normalized * dragForce, forceApplyPos, ForceMode.Force);
 		}
 	}
 
-	private void OnDrawGizmos()
+	private void OnDrawGizmosSelected()
 	{
 		Matrix4x4 oldMatrix = Gizmos.matrix;
 

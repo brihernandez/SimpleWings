@@ -55,7 +55,7 @@ The Standard Wing is based on [experimental data on the NACA 0015 airfoil](http:
 
 ![screenshot](Screenshots/lift.jpg)
 
-The flat plate wing is what it sounds like and is a good approximation for control surfaces or things that aren't necessarily lift producing wings like the fins on a missile. They produce lift, but that's only because they have an angle of attack and the wind beneath it is pushing it upwards. These don't really stall, but they don't really produce much lift unless they're deflecting pretty hard.
+The flat plate wing is what it sounds like and is a good approximation for control surfaces or fins on a missile. They produce lift, but that's only because they have an angle of attack and the wind beneath it is pushing it upwards. These don't really stall, but they don't really produce much lift unless they're deflecting pretty hard.
 
 ## Control Surface
 
