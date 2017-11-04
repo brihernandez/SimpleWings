@@ -16,6 +16,8 @@ If you'd like to try the standalone demo, [it can be downloaded from the release
 
 ## Demo Controls
 
+![screenshot](Screenshots/flying.gif)
+
 The demo plane is best flown with an Xbox One controller. Keyboard controls will work, but because of the on/off input that comes from keys, it's not the best experience.
 
 ### Gamepad
@@ -42,6 +44,8 @@ These wings are driven through a very abstract approximation of aerodynamics. Li
 By putting together wings onto an object in a reasonable way, it's easy to create a physics based flyable airplane. To turn the plane (without cheating with Rigidbody.AddTorque), you will need to deflect wings to create a torque on the plane. Included is a very basic control surface component to facilitate this. See the example Airplane prefab for how to set this up.
 
 ## SimpleWing Component
+
+![screenshot](Screenshots/createwing.gif)
 
 Both a WingCurve and Rigidbody are **requred**. The Rigidbody preferably should be on a parent gameobject that represents the object using the wings. The Rigidbody can be assigned manually through script, but it also automatically uses "GetComponentInParent" during its Awake to try and find one.
 
