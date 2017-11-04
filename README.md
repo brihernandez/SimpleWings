@@ -2,7 +2,7 @@
 
 A simple, configurable aerodynamic wing that applies lift and drag forces based on pre-defined curves. Includes a flyable example airplane, along with a bomb and rocket.
 
-Built in Unity 5.6.4.
+Built in **Unity 5.6.4.**
 
 ![screenshot](Screenshots/wings.png)
 
