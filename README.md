@@ -8,8 +8,6 @@ Built in **Unity 5.6.4.**
 
 ## Download
 
-![screenshot](Screenshots/landing.gif)
-
 You can either clone the repository or [download the asset package](./SimpleWings.unitypackage) located in the root.
 
 If you'd like to try the standalone demo, [it can be downloaded from the releases page](https://github.com/brihernandez/SimpleWings/releases).
@@ -39,13 +37,13 @@ The demo plane is best flown with an Xbox One controller. Keyboard controls will
 
 # Wings
 
-![screenshot](Screenshots/createwing.gif)
-
 These wings are driven through a very abstract approximation of aerodynamics. Lift and drag coefficients are simulated through pre-defined curves created on a WingCurve ScriptableObject. As the angle of attack changes, so does the lift and drag forces incurred. Lift is always perpendicular to the air flow, while drag is always in the opposite direction of the velocity.
 
 By putting together wings onto an object in a reasonable way, it's easy to create a physics based flyable airplane. To turn the plane (without cheating with Rigidbody.AddTorque), you will need to deflect wings to create a torque on the plane. Included is a very basic control surface component to facilitate this. See the example Airplane prefab for how to set this up.
 
 ## SimpleWing Component
+
+![screenshot](Screenshots/createwing.gif)
 
 Both a WingCurve and Rigidbody are **requred**. The Rigidbody preferably should be on a parent gameobject that represents the object using the wings. The Rigidbody can be assigned manually through script, but it also automatically uses "GetComponentInParent" during its Awake to try and find one.
 
