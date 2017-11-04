@@ -64,6 +64,8 @@ public class Airplane : MonoBehaviour
 		if (rudder != null && yawDefined)
 		{
 			// YOU MUST DEFINE A YAW AXIS FOR THIS TO WORK CORRECTLY.
+			// Imported packages do not carry over changes to the Input Manager, so
+			// to restore yaw functionality, you will need to add a "Yaw" axis.
 			rudder.Deflection = Input.GetAxis("Yaw");
 		}
 
@@ -97,20 +99,20 @@ public class Airplane : MonoBehaviour
 
 		// Local pitch velocity (X) is positive when pitching down.
 
-		// Radius of turn = velocity / angular velocity        
-		float radius = localVelocity.z / localAngularVel.x;
+		// Radius of turn = velocity / angular velocity
+		float radius = (Mathf.Approximately(localAngularVel.x, 0.0f)) ? float.MaxValue : localVelocity.z / localAngularVel.x;
 
 		// The radius of the turn will be negative when in a pitching down turn.
 
 		// Force is mass * radius * angular velocity^2
-		float verticalForce = (localVelocity.z * localVelocity.z) / radius;
+		float verticalForce = (Mathf.Approximately(radius, 0.0f)) ? 0.0f : (localVelocity.z * localVelocity.z) / radius;
 
-		// Express in G
-		float verticalG = verticalForce / Physics.gravity.y;
+		// Express in G (Always relative to Earth G)
+		float verticalG = verticalForce / -9.81f;
 
 		// Add the planet's gravity in. When the up is facing directly up, then the full
 		// force of gravity will be felt in the vertical.
-		verticalG += transform.up.y;
+		verticalG += transform.up.y * (Physics.gravity.y / -9.81f);
 
 		return verticalG;
 	}

@@ -85,8 +85,8 @@ public class SimpleWing : MonoBehaviour
 		// DEBUG
 		if (rigid != null)
 		{
-			Debug.DrawRay(transform.position, transform.up * liftForce * 0.001f, Color.blue);
-			Debug.DrawRay(transform.position, -rigid.velocity.normalized * dragForce * 0.001f, Color.red);
+			Debug.DrawRay(transform.position, transform.up * liftForce * 0.0001f, Color.blue);
+			Debug.DrawRay(transform.position, -rigid.velocity.normalized * dragForce * 0.0001f, Color.red);
 		}
 	}
 
