@@ -83,6 +83,6 @@ For certain control surfaces you can put the wings on the same game object, but 
 
 # Changelog
 
-### 1.0 (Initial release)
+### 1.0 (Nov 4 2017)
 
 - Released
