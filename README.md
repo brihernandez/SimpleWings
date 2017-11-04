@@ -6,7 +6,7 @@ Built in **Unity 5.6.4.**
 
 ![screenshot](Screenshots/wings.png)
 
-![screenshot](Screenshots/landing.gif) ![screenshot](Screenshots/createwing.gif)
+![screenshot](Screenshots/lanwding.gif) ![screenshot](Screenshots/crwatewing.gif)
 
 ## Download
 
