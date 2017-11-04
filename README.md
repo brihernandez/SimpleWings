@@ -8,7 +8,9 @@ Built in **Unity 5.6.4.**
 
 ## Download
 
-You can either clone the repository, or [download either the demo or asset package from the releases page](https://github.com/brihernandez/SimpleWings/releases).
+You can either clone the repository or [download the asset package]() located in the root.
+
+If you'd like to try the standalone demo, [it can be downloaded from the releases page](https://github.com/brihernandez/SimpleWings/releases).
 
 ***Note:** When importing the demo content from the package, a "Yaw" axis will need to be set up in the Input Manager in order to get the rudder to work on the sample plane. This is because asset packages cannot modify the Input Manager, and the plane requires a third axis not available on the default setup.*
 
