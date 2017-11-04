@@ -42,4 +42,12 @@ public class WingCurves : ScriptableObject
 	{
 		return drag.Evaluate(aoa);
 	}
+
+	/// <summary>
+	/// Overrides the lift curve with a new set of keys.
+	/// </summary>
+	public void SetLiftCurve(Keyframe[] newCurve)
+	{
+		lift.keys = newCurve;
+	}
 }

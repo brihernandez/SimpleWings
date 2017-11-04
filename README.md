@@ -57,6 +57,18 @@ The Standard Wing is based on [experimental data on the NACA 0015 airfoil](http:
 
 The flat plate wing is what it sounds like and is a good approximation for control surfaces or fins on a missile. They produce lift, but that's only because they have an angle of attack and the wind beneath it is pushing it upwards. These don't really stall, but they don't really produce much lift unless they're deflecting pretty hard.
 
+The Lifting wing is a high lift wing that generates lift even at 0 degrees angle of attack, but stalls easily. It's based loosely on the [NACA 2408 wing](http://airfoiltools.com/airfoil/details?airfoil=naca2408-il#polars).
+
+# Creating Wings
+
+[screenshot](Screenshots/wingcurve.jpg)
+
+When creating wings, the most important points are the first and last 3. These are the ones that most often are directly available in any kind of lift coefficient vs alpha graph, and the ones will most often be adjusting. Most of CL graphs will stop a little after the stalling point, at which point air flow becomes unpredictable, but eventually starts following the pattern of a generic flat plate. This is represented by the middle 3 points in the default graph and for the most part will not need to be adjusted.
+
+![screenshot](Screenshots/curvegenerator.png)
+
+To aid in creating wings, a lift curve generator is available. With it, you can specify the basic parameters of the curve such as where the critical angle of attack is, and how much lift the wing generates at this point. Tooltips are available on each option.
+
 ## Control Surface
 
 To actually fly the plane, you'll need to deflect your wings. The ControlSurface class is included as a simple example, but really shouldn't be taken as gospel. It's a bit hacky.
