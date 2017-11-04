@@ -6,9 +6,9 @@ Built in **Unity 5.6.4.**
 
 ![screenshot](Screenshots/wings.png)
 
-![screenshot](Screenshots/landing.gif) ![screenshot](Screenshots/createwing.gif)
-
 ## Download
+
+![screenshot](Screenshots/landing.gif)
 
 You can either clone the repository or [download the asset package](./SimpleWings.unitypackage) located in the root.
 
@@ -38,6 +38,8 @@ The demo plane is best flown with an Xbox One controller. Keyboard controls will
 - Spacebar: Slow down
 
 # Wings
+
+![screenshot](Screenshots/createwing.gif)
 
 These wings are driven through a very abstract approximation of aerodynamics. Lift and drag coefficients are simulated through pre-defined curves created on a WingCurve ScriptableObject. As the angle of attack changes, so does the lift and drag forces incurred. Lift is always perpendicular to the air flow, while drag is always in the opposite direction of the velocity.
 
