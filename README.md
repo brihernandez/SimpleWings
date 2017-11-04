@@ -16,6 +16,8 @@ If you'd like to try the standalone demo, [it can be downloaded from the release
 
 ## Demo Controls
 
+![screenshot](Screenshots/flying.gif)
+
 The demo plane is best flown with an Xbox One controller. Keyboard controls will work, but because of the on/off input that comes from keys, it's not the best experience.
 
 ### Gamepad
