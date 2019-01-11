@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿//
+// Copyright (c) Brian Hernandez. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
+//
+
+using UnityEngine;
 
 /// <summary>
 /// Shoots a rigidbody forwards with an inital velocity.

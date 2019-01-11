@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿//
+// Copyright (c) Brian Hernandez. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
+//
+
+using UnityEngine;
 
 /// <summary>
 /// A pair of curves for lift and drag that define a wing's behavior over an angle of attack.
