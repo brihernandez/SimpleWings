@@ -2,7 +2,7 @@
 
 A simple, configurable aerodynamic wing that applies lift and drag forces based on pre-defined curves. Includes a flyable example airplane, along with a bomb and rocket.
 
-Built in **Unity 5.6.4.**
+Built in **Unity 5.6.7f1.**
 
 ![screenshot](Screenshots/wings.png)
 
@@ -83,11 +83,26 @@ To aid in creating wings, a lift curve generator is available. With it, you can 
 
 To actually fly the plane, you'll need to deflect your wings. The ControlSurface class is included as a simple example, but really shouldn't be taken as gospel. It's a bit hacky.
 
-It's very simple to operate. All you need to do is set a normalized deflection (-1 to 1) through script using the Deflection property. From there, the control surface will move to the specified deflection at their given speed. Control surfaces only deflect in the "pitch" axis, so make sure you orient these as needed.
+It's very simple to operate. All you need to do is set a normalized deflection (-1 to 1) through script by setting the `targetDeflection` variable. From there, the control surface will move to the specified deflection at their given speed. Control surfaces only deflect in the "pitch" axis, so make sure you orient these as needed.
 
 For certain control surfaces you can put the wings on the same game object, but often times you want the axis of rotation to be different from where the wing is physically located. In those cases, the wing is best on a child game object. See the Airplane prefab for examples on how to set these up with wings.
 
+Control surfaces can optionally have their deflection limited based on the force required to deflect the wing. Put another way, the faster the plane is flying, the less it will be able to deflect the wing. This makes for much more stable and controllable aircraft at high speed, and has a basis in reality.
+
 # Changelog
+
+### 1.1 (Feb 1, 2020)
+
+- Updated to Unity v5.6.7f1
+- Renamed `GetLiftAtAaoa` to `GetLiftAtAOA` to fix typo
+- Renamed `GetDragAtAaoa` to `GetDragAtAOA` to fix typo
+- Debug ray for lift direction shows correct direction
+- Added `#if UNITY_EDITOR` check to prevent Editor-only code from causing issues in a built game
+- Control surfaces can have asymmetric deflection limits (e.g. max 30, min 10)
+- Control surface deflecton can be limited with speed by using `maxTorque`
+- Made `TargetDeflection` property a simple public variable `targetDeflection`
+- FighterJet prefab has increased thrust
+- FighterJet prefab control surfaces demonstrate the new `maxTorque` on ControlSurfaces
 
 ### 1.0 (Nov 4 2017)
 

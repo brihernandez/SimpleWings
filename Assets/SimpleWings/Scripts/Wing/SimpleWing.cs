@@ -8,7 +8,7 @@ using UnityEngine;
 public class SimpleWing : MonoBehaviour
 {
 	[Tooltip("Size of the wing. The bigger the wing, the more lift it provides.")]
-	public Vector2 dimensions = new Vector2(5.0f, 2.0f);
+	public Vector2 dimensions = new Vector2(5f, 2f);
 
 	[Tooltip("When true, wing forces will be applied only at the center of mass.")]
 	public bool applyForcesToCenter = false;
@@ -16,17 +16,19 @@ public class SimpleWing : MonoBehaviour
 	[Tooltip("Lift coefficient curve.")]
 	public WingCurves wing;
 	[Tooltip("The higher the value, the more lift the wing applie at a given angle of attack.")]
-	public float liftMultiplier = 1.0f;
+	public float liftMultiplier = 1f;
 	[Tooltip("The higher the value, the more drag the wing incurs at a given angle of attack.")]
-	public float dragMultiplier = 1.0f;
+	public float dragMultiplier = 1f;
 
 	private Rigidbody rigid;
 
-	private float liftCoefficient = 0.0f;
-	private float dragCoefficient = 0.0f;
-	private float liftForce = 0.0f;
-	private float dragForce = 0.0f;
-	private float angleOfAttack = 0.0f;
+	private Vector3 liftDirection = Vector3.up;
+
+	private float liftCoefficient = 0f;
+	private float dragCoefficient = 0f;
+	private float liftForce = 0f;
+	private float dragForce = 0f;
+	private float angleOfAttack = 0f;
 
 	public float AngleOfAttack
 	{
@@ -82,15 +84,15 @@ public class SimpleWing : MonoBehaviour
 	private void Update()
 	{
 		// Prevent division by zero.
-		if (dimensions.x <= 0.0f)
+		if (dimensions.x <= 0f)
 			dimensions.x = 0.01f;
-		if (dimensions.y <= 0.0f)
+		if (dimensions.y <= 0f)
 			dimensions.y = 0.01f;
 
 		// DEBUG
 		if (rigid != null)
 		{
-			Debug.DrawRay(transform.position, transform.up * liftForce * 0.0001f, Color.blue);
+			Debug.DrawRay(transform.position, liftDirection * liftForce * 0.0001f, Color.blue);
 			Debug.DrawRay(transform.position, -rigid.velocity.normalized * dragForce * 0.0001f, Color.red);
 		}
 	}
@@ -102,12 +104,12 @@ public class SimpleWing : MonoBehaviour
 			Vector3 forceApplyPos = (applyForcesToCenter) ? rigid.transform.TransformPoint(rigid.centerOfMass) : transform.position;
 
 			Vector3 localVelocity = transform.InverseTransformDirection(rigid.GetPointVelocity(transform.position));
-			localVelocity.x = 0.0f;
+			localVelocity.x = 0f;
 
 			// Angle of attack is used as the look up for the lift and drag curves.
 			angleOfAttack = Vector3.Angle(Vector3.forward, localVelocity);
-			liftCoefficient = wing.GetLiftAtAaoA(angleOfAttack);
-			dragCoefficient = wing.GetDragAtAaoA(angleOfAttack);
+			liftCoefficient = wing.GetLiftAtAOA(angleOfAttack);
+			dragCoefficient = wing.GetDragAtAOA(angleOfAttack);
 
 			// Calculate lift/drag.
 			liftForce = localVelocity.sqrMagnitude * liftCoefficient * WingArea * liftMultiplier;
@@ -117,7 +119,7 @@ public class SimpleWing : MonoBehaviour
 			liftForce *= -Mathf.Sign(localVelocity.y);
 
 			// Lift is always perpendicular to air flow.
-			Vector3 liftDirection = Vector3.Cross(rigid.velocity, transform.right).normalized;
+			liftDirection = Vector3.Cross(rigid.velocity, transform.right).normalized;
 			rigid.AddForceAtPosition(liftDirection * liftForce, forceApplyPos, ForceMode.Force);
 
 			// Drag is always opposite of the velocity.
@@ -125,13 +127,16 @@ public class SimpleWing : MonoBehaviour
 		}
 	}
 
+// Prevent this code from throwing errors in a built game.
+#if UNITY_EDITOR
 	private void OnDrawGizmosSelected()
 	{
 		Matrix4x4 oldMatrix = Gizmos.matrix;
 
 		Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-		Gizmos.DrawWireCube(Vector3.zero, new Vector3(dimensions.x, 0.0f, dimensions.y));
+		Gizmos.DrawWireCube(Vector3.zero, new Vector3(dimensions.x, 0f, dimensions.y));
 
 		Gizmos.matrix = oldMatrix;
 	}
+#endif
 }

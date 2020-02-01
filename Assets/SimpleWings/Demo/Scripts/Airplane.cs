@@ -56,22 +56,22 @@ public class Airplane : MonoBehaviour
 	{
 		if (elevator != null)
 		{
-			elevator.Deflection = -Input.GetAxis("Vertical");
+			elevator.targetDeflection = -Input.GetAxis("Vertical");
 		}
 		if (aileronLeft != null)
 		{
-			aileronLeft.Deflection = -Input.GetAxis("Horizontal");
+			aileronLeft.targetDeflection = -Input.GetAxis("Horizontal");
 		}
 		if (aileronRight != null)
 		{
-			aileronRight.Deflection = Input.GetAxis("Horizontal");
+			aileronRight.targetDeflection = Input.GetAxis("Horizontal");
 		}
 		if (rudder != null && yawDefined)
 		{
 			// YOU MUST DEFINE A YAW AXIS FOR THIS TO WORK CORRECTLY.
 			// Imported packages do not carry over changes to the Input Manager, so
 			// to restore yaw functionality, you will need to add a "Yaw" axis.
-			rudder.Deflection = Input.GetAxis("Yaw");
+			rudder.targetDeflection = Input.GetAxis("Yaw");
 		}
 
 		if (engine != null)
